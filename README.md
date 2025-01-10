@@ -1,4 +1,4 @@
-This repository contains functions that form a pipleine to collect data about AIM motifs of heterodera schactii. 
+**This repository contains functions that form a pipleine to collect data about AIM motifs of heterodera schactii.** 
 It does this by automatically sending fasta file queries to https://ilir.warwick.ac.uk/search.php. The script then records the output page of the website and converts it back into two sheets for anchor points and motifs.
 
 I have two versions of the file, distributed.py and single.py. 
