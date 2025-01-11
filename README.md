@@ -1,14 +1,17 @@
-**This repository contains functions that form a pipleine to collect data about AIM motifs of heterodera schactii.** 
+**Overview**
+This repository contains functions that form a pipleine to collect data about AIM motifs of heterodera schactii. 
 It does this by automatically sending fasta file queries to https://ilir.warwick.ac.uk/search.php. The script then records the output page of the website and converts it back into two sheets for anchor points and motifs.
 
-I have two versions of the file, distributed.py and single.py. 
-Both follow the same pipeline, however, distributed.py makes use of concurrent computing to 
-query the server of the website with multiple threads compared to single.py.
+I have two versions of the file, single.py and distributed.py. 
+single.py is the only one in working condition currently. 
+I am working on taking advantage of multiple threads to speed up the web scraping process. 
+I need to implement locking on the output csv files such that threads are not 
+overwriting each other.
 
-The pipeline works in the following functions:
+**The pipeline works using the following functions:**
 
 1. extract_fasta() - converts input data.csv into individual fasta files for each effector and saves them into in the data directory.
-In distributed.py I create a series of subfolders such that instances of send_batch() can operate on different data to avoid concurrency problems. 
+In distributed.py I create a series of subfolders such that multiple threads running send_batch() can operate on different data buckets to avoid concurrency problems. 
 
 2. send_batch() - submits every fasta file in the input folder to the website query fields,
 and then saves the results page as an html file in the web_data folder

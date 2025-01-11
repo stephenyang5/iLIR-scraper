@@ -17,7 +17,7 @@ def extract_fasta():
     if not os.path.exists('data'):
         os.mkdir('data')  # create a directory to store the fasta files
     # read data from csv
-    df = pd.read_csv('test_data.csv')
+    df = pd.read_csv('data.csv')
     output = df.iloc[:, [0, 8]]  # select columns 0 and 8 (gene name and AA seq)
 
     #check to validate output
@@ -44,7 +44,9 @@ def send_batch(folder):
 
     # configure selenium webdriver
     options = Options()
-    options.headless = False  # Set to True to hide the browser
+    options.add_argument('--headless')
+
+      # Set to True to hide the browser
     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
     counter = 0
     #loop through fasta files
@@ -145,7 +147,7 @@ def read_table_files():
         pass
 
     counter = 0
-    dir = 'testing_send_batch'
+    dir = 'web_data'
     for file in os.listdir(dir):
         file_path = os.path.join(dir, file)
 
@@ -164,10 +166,10 @@ def read_table_files():
                 counter+=1
     print(f"Processed {counter} files.")
 
-def cleanup(num_dirs):
+def cleanup():
     # Specify the directory path
     
-    cleanup_folders = [f"data/{i}" for i in range(num_dirs)] + ["data", "web_data"]
+    cleanup_folders = ["data", "web_data"]
     for folder in cleanup_folders:
         if os.path.exists(folder) and os.path.isdir(folder):
             for filename in os.listdir(folder):
@@ -187,12 +189,9 @@ def cleanup(num_dirs):
         else:
             print(f"The directory {folder} does not exist.")
 
-def setup(num_dir):
+def setup():
     
     os.mkdir("data")
-    
-    for i in range(num_dir):
-        os.mkdir(f"data/{i}")
     
     os.mkdir("web_data")
 
@@ -216,15 +215,15 @@ def process_folder(folder_path):
 
 def test():
     start_time = time.time()
-    num_dirs = 10
-    cleanup(10)
-    setup(1)
+    cleanup()
+    setup()
     extract_fasta()
-    print(send_batch("data"))
-    end_time = time.time()
-    
-    print(f"program took {end_time-start_time:.2f} seconds to run")
+    num_files = send_batch("data")
 
-    #read_table_files()
+    end_time = time.time()
+
+    read_table_files()
+    print(f"program took {end_time-start_time:.2f} seconds to run and processed {num_files} files")
+
 
 test()
