@@ -46,6 +46,7 @@ def send_batch(folder):
     # configure selenium webdriver
     options = Options()
     options.headless = True  # Set to True to hide the browser
+    options.add_argument('--headless')
     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
     counter = 0
     #loop through fasta files
@@ -204,16 +205,6 @@ def setup(num_dir):
         pass
 
 
-
-# Define the function that processes a folder
-def process_folder(folder_path):
-    # Simulate data processing
-    print(f"Processing folder: {folder_path}")
-    # Your code to submit data to the website and record results
-    # Example: submit_to_website(folder_path)
-    return f"Completed {folder_path}"
-
-
 def main():
     start_time = time.time()
     num_dirs = 10
@@ -221,18 +212,27 @@ def main():
     setup(num_dirs)
     extract_fasta(num_dirs)
     folders = [f"data/{i}" for i in range(num_dirs)]
+    total_count = 0
     with concurrent.futures.ThreadPoolExecutor() as executor:
-        results = executor.map(send_batch, folders)
+        # Submit tasks to the executor
+        futures = {executor.submit(send_batch, folder): folder for folder in folders}
 
-    total = 0  
-    for count in results:
-        total += count
-    print(f"Procesesd {total} files")
-    end_time = time.time()
+        for future in concurrent.futures.as_completed(futures):
+            folder = futures[future]
+            try:
+                # Get the result of the send_batch function
+                count = future.result()
+                total_count += count
+                print(f"Processed {count} files from folder: {folder}")
+            except Exception as e:
+                print(f"Error processing folder {folder}: {e}")
+
+    # All threads are complete, proceed to the next step
 
     read_table_files()
+    print(f"Total files processed: {total_count}")
 
-    
+    end_time = time.time()
     print(f"program took {end_time-start_time:.2f} seconds to run")
 
 if __name__ == "__main__":
