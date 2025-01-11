@@ -213,7 +213,7 @@ def process_folder(folder_path):
 
 
 
-def test():
+def main():
     start_time = time.time()
     cleanup()
     setup()
@@ -226,4 +226,5 @@ def test():
     print(f"program took {end_time-start_time:.2f} seconds to run and processed {num_files} files")
 
 
-test()
+if __name__ == "__main__":
+    main()
