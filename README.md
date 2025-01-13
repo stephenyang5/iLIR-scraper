@@ -23,6 +23,10 @@ read_query_table() and read_anchor_table() to specifically parse data for the re
 
 5. cleanup() - deletes files and file structure generated from previous pipeline runs
 
+condense.py holds scripts use for filtering data for various other work
+such as filtering for motif families GLAND4 and 4d06 or combining all 
+fasta sequences into a single word file.
+
 Refer to the individual files for more in detail commenting
 
 Please email stephen_c_yang@brown.edu if you have any questions or suggestions!
