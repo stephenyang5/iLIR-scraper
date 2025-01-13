@@ -1,4 +1,4 @@
-**Overview**
+**Overview:**
 This repository contains functions that form a pipleine to collect data about AIM motifs of heterodera schactii. 
 It does this by automatically sending fasta file queries to https://ilir.warwick.ac.uk/search.php. The script then records the output page of the website and converts it back into two sheets for anchor points and motifs.
 
@@ -19,9 +19,13 @@ and then saves the results page as an html file in the web_data folder
 3. read_table_files() - parses every saved html file in the inputted folder to find the query table and the anchor table within the website content, then adds the data into query_data.csv and anchor_data.csv in the output folder. It does this using helper functions
 read_query_table() and read_anchor_table() to specifically parse data for the respective tables.
 
-4. setup() - sets up the folder structure needed for this pipeline
+4. setup() - sets up the file structure needed for this pipeline
 
 5. cleanup() - deletes files and file structure generated from previous pipeline runs
+
+condense.py holds scripts use for filtering data for various other work
+such as filtering for motif families GLAND4 and 4d06 or combining all 
+fasta sequences into a single word file.
 
 Refer to the individual files for more in detail commenting
 
